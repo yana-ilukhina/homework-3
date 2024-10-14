@@ -1,5 +1,7 @@
 package ru.ilukhinayana.jungle.util;
 
+import ru.ilukhinayana.jungle.entity.Elephant;
+
 public class Event {
 
     // слон поспал +20 энергии +5 здоровья
@@ -10,5 +12,19 @@ public class Event {
     //
 
     // если энергия = 0, то -5 здоровья
+
+    public void activateEvent() {
+
+    }
+
+    private void  sleepEvent(Elephant eleph) {
+        int energy = eleph.getEnergy();
+        energy += 20;
+        if (energy > 100) {
+            energy = 100;
+            }
+        eleph.setEnergy(energy);
+        System.out.println("Слон поспал! Текущие показатели здоровья и энергии: " + eleph.getHealth() + " " + eleph.getEnergy());
+    }
 
 }
