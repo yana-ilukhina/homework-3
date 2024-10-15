@@ -10,7 +10,7 @@ public class Elephant {
     }
 
     public int getHealth() {
-        return health; //(this.?)
+        return this.health; //(this.?)
     }
 
     public void setEnergy(int energy) {
@@ -18,10 +18,10 @@ public class Elephant {
     }
 
     public int getEnergy() {
-        return energy;
+        return this.energy;
     }
 
     public int getFANGS() {
-        return FANGS;
+        return this.FANGS;
     }
 }
