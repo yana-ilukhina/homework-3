@@ -3,7 +3,7 @@ package ru.ilukhinayana.jungle.entity;
 public class Elephant {
     private int health = 120; // здоровье животного
     private int energy = 100; // энергия животного
-    private final int FANGS = 2; // коэффициент клыков у животного
+    private final double FANGS = 2.2; // коэффициент клыков у животного
 
     public void setHealth(int health) {
         this.health = health;
@@ -21,7 +21,7 @@ public class Elephant {
         return this.energy;
     }
 
-    public int getFANGS() {
+    public double getFANGS() {
         return this.FANGS;
     }
 }
