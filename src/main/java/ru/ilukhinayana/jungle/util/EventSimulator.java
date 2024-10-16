@@ -15,19 +15,19 @@ public class EventSimulator {
     // 9. Слон впал в агрессию, гон, муст: -5 здоровья и -20 энергии
     // 10. Сон заболел, но выздоровел, -15 здоровья и -20 энергии
 
-    // Вероятность каждого события - 10%, а заболеть 11%
+    // Вероятность каждого события - 10%, только заболеть 11%
 
     // если энергия < 0, то -5 здоровья
     // если здоровье = 0, то слон погиб
 
-    String emojElephant = "\ud83d\udc18";
+    String emojiElephant = "\ud83d\udc18";
 
     public void startSimulation(Elephant eleph) throws InterruptedException {
         String dice = "\ud83c\udfb2"; // эмодзи игральные кости
         int eventNumber;
         while (isAlive(eleph)) {
             eventNumber = (int) (Math.random() * 100);
-            System.out.println(dice +" " + eventNumber + "...");
+            System.out.println(dice + " " + eventNumber + "..."); //вывод числа рандомайзера
             Thread.sleep(1000);
             if (eventNumber < 10) {
                 sleepEvent(eleph);
@@ -51,7 +51,7 @@ public class EventSimulator {
                 illnessTime(eleph);
             }
         }
-        System.out.println("*Траурная музыка* Ооо нет! Слон погиб ;( " + emojElephant + eleph.getHealth() + " здоровья");
+        System.out.println("*Траурная музыка* Ооо нет! Слон погиб ;( " + emojiElephant + "\ud83d\udc94" + eleph.getHealth() + " здоровья");
     }
 
     private void sleepEvent(Elephant eleph) { // 1. слон поспал: +5 здоровья и +20 энергии
@@ -59,21 +59,21 @@ public class EventSimulator {
         int energy = eleph.getEnergy();
         health += 5;
         energy += 20;
-        eleph.setHealth(health);
+        eleph.setHealth(health); // правильная очередность: сначала set, потом check и если что перезапись
         eleph.setEnergy(energy);
         checkMinMaxEnergy(eleph);
         checkMaxHealth(eleph);
         System.out.println("Слон поспал! +5 здоровья, +20 энергии.");
-//        Текущие показатели: "+ eleph.getHealth() + " здоровья, " + eleph.getEnergy() + " энергии");
+        //"Текущие показатели: + eleph.getHealth() + " здоровья, " + eleph.getEnergy() + " энергии");
     }
 
-    private void move(Elephant eleph) { // 2. слон походил, ничего не нашел: -7 энергии
+    private void move(Elephant eleph) throws InterruptedException { // 2. слон походил, ничего не нашел: -7 энергии
         int energy = eleph.getEnergy();
         energy -= 7;
         eleph.setEnergy(energy);
         checkMinMaxEnergy(eleph);
         System.out.println("Слон походил просто так, немного устал! -7 энергии. ");
-                //"Текущие показатели: "+ eleph.getHealth() + " здоровья, " + eleph.getEnergy() + " энергии");
+        Thread.sleep(500);
     }
 
     private void eatLeaves(Elephant eleph) { // 3. слон поел листьев: +5 здоровья и +5 энергии * коэфф клык
@@ -86,7 +86,6 @@ public class EventSimulator {
         checkMinMaxEnergy(eleph);
         checkMaxHealth(eleph);
         System.out.println("Слон поел листьев! :) +5 здоровья, +10 энергии. ");
-                //"Текущие показатели: + eleph.getHealth() + " здоровья, " + eleph.getEnergy() + " энергии");
     }
 
     private void eatFruits(Elephant eleph) { // 4. слон поел фруктов: +5 здоровья и +4 энергии * коэфф клык
@@ -99,7 +98,6 @@ public class EventSimulator {
         checkMinMaxEnergy(eleph);
         checkMaxHealth(eleph);
         System.out.println("Слон поел фруктов! :) +5 здоровья, +8 энергии. ");
-//                "Текущие показатели: " + eleph.getHealth() + " здоровья, " + eleph.getEnergy() + " энергии");
     }
 
     private void drinkWater(Elephant eleph) { // 5. слон попил воды: +2 здоровья и +2 энергии * коэфф клык
@@ -110,9 +108,9 @@ public class EventSimulator {
         eleph.setHealth(health);
         eleph.setEnergy(energy);
         checkMinMaxEnergy(eleph);
+        isAlive(eleph); // похоже допустимо и ничего не возвращая
         checkMaxHealth(eleph);
         System.out.println("Слон попил воды! :) +2 здоровья, +4 энергии. ");
-//                "Текущие показатели: " + eleph.getHealth() + " здоровья, " + eleph.getEnergy() + " энергии");
     }
 
     private void poacherAttack(Elephant eleph) { // 6. на слона напал браконьер: - 50 здоровья - 50 энергии
@@ -125,7 +123,6 @@ public class EventSimulator {
         checkMinMaxEnergy(eleph);
         checkMaxHealth(eleph);
         System.out.println("На слона напал браконьер! :( -50 здоровья, -50 энергии. ");
-//                "Текущие показатели: " + eleph.getHealth() + " здоровья, " + eleph.getEnergy() + " энергии");
     }
 
     private void lionsAttack(Elephant eleph) { // 7. на слона напали львы: -20 здоровья и -30 энергии
@@ -138,7 +135,6 @@ public class EventSimulator {
         checkMinMaxEnergy(eleph);
         checkMaxHealth(eleph);
         System.out.println("На слона напали львы! :( -20 здоровья, -30 энергии. ");
-//                "Текущие показатели: " + eleph.getHealth() + " здоровья, " + eleph.getEnergy() + " энергии");
     }
 
     private void crocodileAttack(Elephant eleph) { // 8. на слона напал крокодил: -15 здоровья и -20 энергии
@@ -151,7 +147,6 @@ public class EventSimulator {
         checkMinMaxEnergy(eleph);
         checkMaxHealth(eleph);
         System.out.println("На слона напал крокодил! :( -15 здоровья, -20 энергии. ");
-//                "Текущие показатели: " + eleph.getHealth() + " здоровья, " + eleph.getEnergy() + " энергии");
     }
 
     private void aggressiveTime(Elephant eleph) { // 9. слон впал в агрессию, гон, муст: -5 здоровья и -20 энергии
@@ -164,7 +159,6 @@ public class EventSimulator {
         checkMinMaxEnergy(eleph);
         checkMaxHealth(eleph);
         System.out.println("У слона гон, он впал в агресcию! :( -5 здоровья, -20 энергии. ");
-//                "Текущие показатели: " + eleph.getHealth() + " здоровья, " + eleph.getEnergy() + " энергии");
     }
 
     private void illnessTime(Elephant eleph) { // 10. слон заболел, но выздоровел, -15 здоровья и -20 энергии
@@ -177,7 +171,6 @@ public class EventSimulator {
         checkMinMaxEnergy(eleph);
         checkMaxHealth(eleph);
         System.out.println("Слон заболел, но выздоровел! -15 здоровья, -20 энергии. ");
-//                "Текущие показатели: " + eleph.getHealth() + " здоровья, " + eleph.getEnergy() + " энергии");
     }
 
     private void checkMaxHealth(Elephant eleph) {
@@ -185,7 +178,6 @@ public class EventSimulator {
         if (health > 120) {
             health = 120;
             eleph.setHealth(health);
-//            System.out.println("Слон и так здоровый :). Текущие показатели здоровья: "+ eleph.getHealth());
         }
     }
 
@@ -213,6 +205,6 @@ public class EventSimulator {
 //                    + eleph.getHealth() + " здоровья,  " + eleph.getEnergy() + " энергии");
         }
     } // можно объединить проверку на макс здоровье и мин-макс энергии, но как назвать? И стоит ли объединять вообще?
-}     // можно объединить и с проверкой isAlive, return д.б. в самом конце
+}     // можно объединить и с проверкой isAlive, return д.б. в самом конце. Но будет нагромождение
 
 
